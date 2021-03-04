@@ -13,11 +13,15 @@ start :-
     dessinerTerrain(Plateau). 
 
 
+% ___________________________________________________________
 
 dessinerTerrain([ [_, _, _], [_, _, _], _, TailleTerrain ]):-
     write('    1   2   3   4   5   6   7   8   9'), nl,
     I = 1,
     dessinerLigne(I, TailleTerrain).
+
+
+% ___________________________________________________________
 
 dessinerLigne(I, T) :- % I le numéro de la ligne dessinée.
     I =< T, % On est dans le terrain.
@@ -25,16 +29,19 @@ dessinerLigne(I, T) :- % I le numéro de la ligne dessinée.
     %Dessiner les murs
     J = 1, % indice
     write('  .   .   .   .   .   .   .   .   .   .'), nl,
-    write(I), write('  '), dessinerPions(I, J, T, [1, 5], [2, 3]),
 
-    %Dessiner les pions
+    % Dessiner les indices (n° des lignes)
+    write(I), write('  '),
+    % Dessiner les pions 
+    dessinerPions(I, J, T, [1, 5], [2, 3]),  
 
     Inew is I + 1, % I++
-    dessinerLigne(Inew, T).
+    dessinerLigne(Inew, T). % On dessine la ligne suivante
 
-dessinerLigne(T, T) :- %Après la dernière ligne
+dessinerLigne(T, T) :- % Après la dernière ligne
     write('  .   .   .   .   .   .   .   .   .   .'), nl.
 
+% ___________________________________________________________
 % I: la position en x
 % J: position en y
 % T: Taille du terrain 
