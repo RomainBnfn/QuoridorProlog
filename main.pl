@@ -79,18 +79,28 @@ peutPlacerMur(X, Y, Sens, N, Murs) :-
 placerMur(X, Y, Sens, Joueur, [[Xa, Ya, Na], [Xb, Yb, Nb], Murs, T], NouveauPlateau) :-
     % Conditions
     ( (Joueur == joueurA) -> 
+        % Si Joueur == joueurA :
         peutPlacerMur(X, Y, Sens, Na, Murs);
+        % Sinon :
         peutPlacerMur(X, Y, Sens, Nb, Murs)
     ),
 
     %Ajout de 2 petits murs
     append(Murs, [[X, Y, Sens]], M1),
     ( (Sens == vertical) -> 
-        Xnew is X + 1, append(M1, [[Xnew, Y, Sens]], Mursnew);
-        Ynew is Y + 1, append(M1, [[X, Ynew, Sens]], Mursnew)
+        % Si Sens == vertical:
+        Xnew is X + 1, 
+        append(M1, [[Xnew, Y, Sens]], Mursnew);
+        % Sinon :
+        Ynew is Y + 1, 
+        append(M1, [[X, Ynew, Sens]], Mursnew)
     ),
     ( (Joueur == joueurA) -> 
-        Nnew is Na -1, NouveauPlateau = [[Xa, Ya, Nnew], [Xb, Yb, Nb], Mursnew, T];
-        Nnew is Nb -1, NouveauPlateau = [[Xa, Ya, Na], [Xb, Yb, Nnew], Mursnew, T]
+        % Si Joueur == joueurA :
+        Nnew is Na -1, 
+        NouveauPlateau = [[Xa, Ya, Nnew], [Xb, Yb, Nb], Mursnew, T];
+        % Sinon :
+        Nnew is Nb -1, 
+        NouveauPlateau = [[Xa, Ya, Na], [Xb, Yb, Nnew], Mursnew, T]
     ).
     
