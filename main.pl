@@ -1,13 +1,10 @@
-%  +----------+  +---------+
-%  |  +----+  |  |  +---+  |
-%  |  |    |  |  |  |   |  |
-%  |  |    |  |  |  |   |  |
-%  |  |    |  |  |  |   |  |
-%  |  +----+  |  |  +---+  |
-%  +-------\  \  +---------+
-%           \__\
-%Quoridor 
-
+%    _____                   _     _            
+%   /  __ \                 (_)   | |           
+%   | |  | |_   _  ___  _ __ _  __| | ___  _ __ 
+%   | |  | | | | |/ _ \| '__| |/ _` |/ _ \| '__|
+%   | |__| | |_| | (_) | |  | | (_| | (_) | |   
+%    \___\_\\__,_|\___/|_|  |_|\__,_|\___/|_|       
+%
 
 % Comment est modélisé le jeu ?
 %    --> 2 tableaux pour les coordonnées des pions des joueurs, suivit des murs restants [Xa, Ya, Na] et [Xb, Yb, Nb].
@@ -30,7 +27,7 @@ start :-
     % On initialise le jeu en plaçant un joueur en (1,5) avec 5 murs,
     % et un joueur en (9,5) avec 5 murs. La plateau fait 9x9.
 
-    dessinerTerrain(NouveauPlateau2),
+    dessinerTerrain(Plateau),
     clear(5). 
 
 
