@@ -26,11 +26,27 @@ start :-
         9],        % Taille du terrain 
     % On initialise le jeu en plaçant un joueur en (1,5) avec 5 murs,
     % et un joueur en (9,5) avec 5 murs. La plateau fait 9x9.
+    boucleEcouteJoueur(joueurA, Plateau). 
 
+boucleEcouteJoueur(Joueur, Plateau) :-
     dessinerTerrain(Plateau),
-    clear(5). 
+    write('Que voulez vous faire ?'), nl,
+    read(Action), nl,
+    write('Le joueur '), write(Joueur), write(' joue '), write(Action), nl,
+    
+    ((aGagne(Joueur, Plateau)) ->
+        %Si le joueur vient de gagner 
+        write('Fin du jeu, le '), write(Joueur), write(' a gagné !') ;
+        %Sinon : relance la boucle de jeu
+        autreJoueur(Joueur, AutreJoueur),
+        boucleEcouteJoueur(AutreJoueur, Plateau)
+    ).
+    
+autreJoueur(joueurB, joueurA).
+autreJoueur(joueurA, joueurB).
 
-
+aGagne(joueurA, [[9,_,_], _, _, _]).
+aGagne(joueurB, [_, [1,_,_], _, _]).
 % - - - - - G e s t i o n   d e s    M u r s - - - - -
 
 % ___________________________________________________________
