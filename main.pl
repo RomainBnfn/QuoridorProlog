@@ -28,22 +28,98 @@ start :-
     % et un joueur en (9,5) avec 5 murs. La plateau fait 9x9.
     boucleEcouteJoueur(joueurA, Plateau). 
 
+
+
+% - - - - - G e s t i o n   d e s    T o u r s   d e   J e u - - - - -
+
+% ___________________________________________________________
+    % Boucle qui dessine le tour en cours, puis lance les demandes d'action du joueur. 
+    % Se termine en cas de victoire, sinon continue. 
+    %
+    %   Joueur  : Le joueur devant jouer
+    %   Plateau : Le plateau en début de tour
 boucleEcouteJoueur(Joueur, Plateau) :-
+    clear(5),
+    write('_________________'), write(Joueur), write('_________________'), nl,
     dessinerTerrain(Plateau),
-    write('Que voulez vous faire ?'), nl,
-    read(Action), nl,
-    write('Le joueur '), write(Joueur), write(' joue '), write(Action), nl,
+    nl,
+    write('Au tour de '), write(Joueur), write(' de jouer :'), nl,
+    nl,
+    tourJoueur(Joueur, Plateau, NouveauPlateau),
     
-    ((aGagne(Joueur, Plateau)) ->
+    ((aGagne(Joueur, NouveauPlateau)) ->
         %Si le joueur vient de gagner 
         write('Fin du jeu, le '), write(Joueur), write(' a gagné !') ;
         %Sinon : relance la boucle de jeu
         autreJoueur(Joueur, AutreJoueur),
-        boucleEcouteJoueur(AutreJoueur, Plateau)
+        boucleEcouteJoueur(AutreJoueur, NouveauPlateau)
     ).
     
+% ___________________________________________________________
+    % Boucle qui demande au joueur l'action qu'il veut réaliser. 
+    % Se termine en cas d'action correcte (mur ou deplacer). 
+    %
+    %   Joueur          : Le joueur devant jouer
+    %   Plateau         : Le plateau en début de tour
+    %   NouveauPlateau  : Le plateau après avoir effectué l'action
+tourJoueur(Joueur, Plateau, NouveauPlateau) :- 
+    write('Que voulez vous faire ? Entrez mur ou deplacer'), nl,
+    read(Action), nl,
+    ( (Action \== mur, Action \== deplacer) ->
+        % Ce qui est rentré n'est pas mur ou deplacer
+        nl,
+        write('Ce que vous venez de rentrer est incorrect, merci de rentrer mur ou deplacer'), nl,
+        tourJoueur(Joueur, Plateau, NouveauPlateau);
+
+        % L'action est mur ou deplacer
+        ((Action == mur) -> 
+            % Le joueur veut placer un mur
+            (aEncoreMur(Joueur, Plateau) ->
+                % Le joueur a encore des murs à placer
+                demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau);
+                % Sinon
+                write('Vous n\'avez plus de mur, vous ne pouvez plus en placer, veuillez vous deplacer.'), nl,
+                tourJoueur(Joueur, Plateau, Plateau)
+            );
+            
+            
+            % Le joueur veut se déplacer
+            demanderDeplacerJoueur(Joueur, Plateau, NouveauPlateau)
+        )
+    ).
+ 
+ % ___________________________________________________________
+    % Boucle qui demande au joueur où il veut placer un mur. 
+    % Se termine quand le joueur a placé un mur. 
+    %
+    %   Joueur          : Le joueur devant jouer
+    %   Plateau         : Le plateau en début de tour
+    %   NouveauPlateau  : Le plateau après avoir effectué l'action
+demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau) :-
+    write('Ou voulez vous placer votre mur ?'), nl, 
+    write(' Entrez la coordonnee X :'), nl,
+    read(ReponseX), nl,
+    write(' Entrez la coordonnee Y :'), nl,
+    read(ReponseY), nl,
+    write(' Entrez l\'orientation de votre mur : vertical ou horizontal :'), nl,
+    read(ReponseSens), nl,
+
+    ( (placerMur(ReponseX, ReponseY, ReponseSens, Joueur, Plateau, NouveauPlateau)) ->
+        % OK
+        write('Le mur a bien ete place !');
+        % Nope
+        nl,
+        write('Vous ne pouvez pas placer de mur ici, veuillez recommencez les saisies.'), nl,
+        demanderPlacerMurJoueur(Joueur, Plateau, Plateau)
+    ).
+
+demanderDeplacerJoueur(A, B) :- write('Toto').
+
 autreJoueur(joueurB, joueurA).
 autreJoueur(joueurA, joueurB).
+
+aEncoreMur(joueurA, [[_,_,N], _, _, _]) :- N > 0.
+aEncoreMur(joueurB, [_, [_,_,N], _, _]) :- N > 0.
 
 aGagne(joueurA, [[9,_,_], _, _, _]).
 aGagne(joueurB, [_, [1,_,_], _, _]).
@@ -73,6 +149,7 @@ peutPlacerMur(X, Y, Sens, N, Murs) :-
         );
     
     %Horizontal
+        Sens == horizontal,
         Yplus is Y + 1,
         Xminus is X - 1,
         % Il n'y a pas déjà un mur à l'emplacement du 2nd mur

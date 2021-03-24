@@ -13,8 +13,8 @@
     % TailleTerrain : La taille du terrain
 dessinerTerrain([ [Xa, Ya, Na], [Xb, Yb, Nb], Murs, TailleTerrain ]):-
     nl,
-    write('Terrain(s) du joueur A : '), write(Na), nl,
-    write('Terrain(s) du joueur B : '), write(Nb), nl,
+    write('Mur(s) du joueur A : '), write(Na), nl,
+    write('Mur(s) du joueur B : '), write(Nb), nl,
     nl,    
     
     write('  1   2   3   4   5   6   7   8   9'), nl,
