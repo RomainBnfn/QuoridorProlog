@@ -10,8 +10,7 @@
     % [Xb, Yb]  : Les coordonnées du pion du joueur B
     % Nb        : Le nombre de murs qu'il reste au joueur B
     % Murs      : La liste des murs posés
-    % TailleTerrain : La taille du terrain
-dessinerTerrain([ [Xa, Ya, Na], [Xb, Yb, Nb], Murs, TailleTerrain ]):-
+dessinerTerrain([ [Xa, Ya, Na], [Xb, Yb, Nb] ]):-
     nl,
     write('Mur(s) du joueur A : '), write(Na), nl,
     write('Mur(s) du joueur B : '), write(Nb), nl,
@@ -20,8 +19,7 @@ dessinerTerrain([ [Xa, Ya, Na], [Xb, Yb, Nb], Murs, TailleTerrain ]):-
     write('  1   2   3   4   5   6   7   8   9'), nl,
     
     % Dessiner les différentes lignes
-    I = 1,
-    dessinerLigne(I, TailleTerrain, [Xa, Ya], [Xb, Yb], Murs).
+    dessinerLigne(1, [Xa, Ya], [Xb, Yb]).
 
 
 % ___________________________________________________________
@@ -29,24 +27,23 @@ dessinerTerrain([ [Xa, Ya, Na], [Xb, Yb, Nb], Murs, TailleTerrain ]):-
     %  demande à suivante de s'afficher.
     %
     %   I        : Le numéro de la ligne à afficher
-    %   T        : La taille maximale du terrain
     %   [Xa, Ya] :  Les coordonnées du pion du joueur A
     %   [Xb, Yb] :  Les coordonnées du pion du joueur B
     %   Murs     :  La liste des murs posés.
-dessinerLigne(I, T, [Xa, Ya], [Xb, Yb], Murs) :- % I le numéro de la ligne dessinée.
-    I =< T, % On est dans le terrain.
+dessinerLigne(I, [Xa, Ya], [Xb, Yb]) :- % I le numéro de la ligne dessinée.
+    I =< 9, % On est dans le terrain.
     
     %Dessiner les indices (n° des lignes) puis les murs horizontaux
-    write(I), write(' '), dessinerMursHorizontaux(I, 1, Murs, T),
+    write(I), write(' '), dessinerMursHorizontaux(I, 1),
 
     % Dessiner les pions et murs verticaux
-    write('  '), dessinerPionsMurs(I, 1, T, [Xa, Ya], [Xb, Yb], Murs ),  
+    write('  '), dessinerPionsMurs(I, 1, [Xa, Ya], [Xb, Yb] ),  
 
     Inew is I + 1, % I++
-    dessinerLigne(Inew, T, [Xa, Ya], [Xb, Yb], Murs). % On dessine la ligne suivante
+    dessinerLigne(Inew, [Xa, Ya], [Xb, Yb]). % On dessine la ligne suivante
 
-dessinerLigne(I, T, _, _, _) :- % Après la dernière ligne
-    I > T,
+dessinerLigne(I, _, _) :- % Après la dernière ligne
+    I > 9,
     write('  +   +   +   +   +   +   +   +   +   +'), nl.
 
 % ___________________________________________________________
@@ -55,63 +52,61 @@ dessinerLigne(I, T, _, _, _) :- % Après la dernière ligne
     % 
     %   I: la position en x
     %   J: position en y
-    %   T: Taille du terrain
     %   [Xa, Ya] :  Les coordonnées du pion du joueur A
     %   [Xb, Yb] :  Les coordonnées du pion du joueur B
     %   Murs     :  La liste des murs posés.
-dessinerPionsMurs(I, J, T, [I, J], [Xb, Yb], Murs ) :- 
-    J =< T, % On ne dépasse pas du terrain
-    dessinerMur(I, J, Murs, vertical),
+dessinerPionsMurs(I, J, [I, J], [Xb, Yb] ) :- 
+    J =< 9, % On ne dépasse pas du terrain
+    dessinerMur(I, J, vertical),
     write(' A '),
     Jnew is J + 1,
-    dessinerPionsMurs(I, Jnew, T, [I,J], [Xb, Yb], Murs ).
+    dessinerPionsMurs(I, Jnew, [I,J], [Xb, Yb] ).
 
-dessinerPionsMurs(I, J, T, [Xa, Ya], [I, J], Murs ) :- 
-    J =< T, % On ne dépasse pas du terrain
+dessinerPionsMurs(I, J, [Xa, Ya], [I, J] ) :- 
+    J =< 9, % On ne dépasse pas du terrain
 
-    dessinerMur(I, J, Murs, vertical),
+    dessinerMur(I, J, vertical),
     write(' B '),
     
     Jnew is J + 1,
-    dessinerPionsMurs(I, Jnew, T, [Xa, Ya], [I, J], Murs ).
+    dessinerPionsMurs(I, Jnew, [Xa, Ya], [I, J] ).
 
-dessinerPionsMurs(I, J, T, [Xa, Ya], [Xb, Yb], Murs ) :-
-    J =< T, % On ne dépasse pas du terrain
+dessinerPionsMurs(I, J,  [Xa, Ya], [Xb, Yb] ) :-
+    J =< 9, % On ne dépasse pas du terrain
 
     ( Xa\=I ; Ya\=J ), % On est pas sur une case d'un pion
     ( Xb\=I ; Yb\=J ),
 
-    dessinerMur(I, J, Murs, vertical),
+    dessinerMur(I, J, vertical),
     write('   '),
 
     Jnew is J + 1,
-    dessinerPionsMurs(I, Jnew, T, [Xa, Ya], [Xb, Yb], Murs).
+    dessinerPionsMurs(I, Jnew, [Xa, Ya], [Xb, Yb]).
 
-dessinerPionsMurs(_, J, T, _, _, _) :- J > T, nl.
+dessinerPionsMurs(_, 10, _, _) :- nl.
 
 % ___________________________________________________________
     %
     %
-dessinerMur(I,J, Murs, vertical):-
-    ( (estDansListe([I,J,vertical], Murs)) -> 
+dessinerMur(I,J, vertical):-
+    ( (estPlaceMur(I,J,vertical)) -> 
         write('|');
         write(' ')
     ).
 
 % ___________________________________________________________
 
-dessinerMursHorizontaux(I, J, Murs, T) :-
-    J =< T,
+dessinerMursHorizontaux(I, J) :-
+    J =< 9,
     write('+'),
-    ( (estDansListe([I,J,horizontal], Murs)) -> 
+    ( estPlaceMur(I, J, horizontal) -> 
         write('---');
         write('   ')
     ),
     Jnew is J+1,
-    dessinerMursHorizontaux(I, Jnew, Murs, T).
+    dessinerMursHorizontaux(I, Jnew).
 
-dessinerMursHorizontaux(_, J, _, T) :-
-    J > T,
+dessinerMursHorizontaux(_, 10) :-
     write('+'),
     nl.
 
