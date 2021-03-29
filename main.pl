@@ -14,6 +14,7 @@
 :-include('affichage.pl'). % Les fonctions d'affichage graphique
 :-include('tools.pl'). % Les outils pratiques
 :-include('murs.pl'). % Gestion des murs
+:-include('deplacement.pl'). % Gestion des déplacement
 
 
 % Atome à rentrer pour lancer le programme. 
@@ -82,7 +83,6 @@ tourJoueur(Joueur, Plateau, NouveauPlateau) :-
                 tourJoueur(Joueur, Plateau, Plateau)
             );
             
-            
             % Le joueur veut se déplacer
             demanderDeplacerJoueur(Joueur, Plateau, NouveauPlateau)
         )
@@ -113,6 +113,12 @@ demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau) :-
         demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau)
     ).
 
-demanderDeplacerJoueur(A, B) :- write('Toto').
+demanderDeplacerJoueur(Joueur, Plateau, NouveauPlateau) :- (
+    write('Ou voulez vous placer vous déplacer ?'), nl, 
+    write(' Entrez la coordonnee X (ligne) :'), nl,
+    read(ReponseX), nl,
+    write(' Entrez la coordonnee Y (colonne):'), nl,
+    read(ReponseY), nl,
 
-
+    seDeplacer(ReponseX, ReponseY, Plateau, Joueur, NouveauPlateau)
+    ).
