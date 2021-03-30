@@ -47,7 +47,6 @@ boucleEcouteJoueur(Joueur, Plateau) :-
     write('Au tour de '), write(Joueur), write(' de jouer :'), nl,
     nl,
     tourJoueur(Joueur, Plateau, NouveauPlateau),
-    
     ((aGagne(Joueur, NouveauPlateau)) ->
         %Si le joueur vient de gagner 
         write('Fin du jeu, le '), write(Joueur), write(' a gagné !') ;
@@ -114,11 +113,16 @@ demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau) :-
     ).
 
 demanderDeplacerJoueur(Joueur, Plateau, NouveauPlateau) :- (
-    write('Ou voulez vous placer vous déplacer ?'), nl, 
+    [J1,J2] = Plateau,
+    write('Vos coordonnees actuelles: '),
+    (Joueur == joueurA -> write(J1);write(J2)),nl,
+    write('Ou voulez vous placer vous deplacer ?'), nl, 
     write(' Entrez la coordonnee X (ligne) :'), nl,
     read(ReponseX), nl,
     write(' Entrez la coordonnee Y (colonne):'), nl,
     read(ReponseY), nl,
 
-    seDeplacer(ReponseX, ReponseY, Plateau, Joueur, NouveauPlateau)
+    (seDeplacer(ReponseX, ReponseY, Plateau, Joueur, NouveauPlateau) -> 
+        nl;
+        demanderDeplacerJoueur(Joueur,Plateau,NouveauPlateau))
     ).

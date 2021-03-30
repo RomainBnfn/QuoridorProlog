@@ -102,10 +102,18 @@ estDeplacementPossible(X,Y,Pion,PionAdv):- (
     %   Joueur          : Le joueur devant jouer
     %   NouveauPlateau  : Le plateau après avoir effectué l'action
 seDeplacer(X,Y,Plateau,Joueur,NouveauPlateau):-
-    [[X1,Y1,_],[X2,Y2,_]] = Plateau,
-    estDeplacementPossible(X,Y,[X1,Y1],[X2,Y2]) ->
-    write('Quel move !!'); % deplacer la position du joueur
-    write('Tu fais de la merde gars !!').
+    [[X1,Y1,M1],[X2,Y2,M2]] = Plateau,
+    (Joueur == joueurA -> Pion = [X1,Y1], PionAdv = [X2,Y2];Pion = [X2,Y2], PionAdv = [X1,Y1]),
+    estDeplacementPossible(X,Y,Pion,PionAdv) ->
+        (
+            write('Quel move !!'),nl,
+            (Joueur == joueurA ) -> NouveauPlateau = [[X,Y,M1],[X2,Y2,M2]];NouveauPlateau = [[X1,Y1,M1],[X,Y,M2]]
+        );
+        (
+            write('Tu fais de la merde gars !!'),nl,
+            NouveauPlateau = Plateau,
+            false
+        ).
 
 % Test du prédicat (c'est comme ça que ça s'appelle ces trucs?) estDeplacementPossible/4
 testEstDeplacementPossible() :-
