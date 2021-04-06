@@ -17,6 +17,10 @@
 :-consult('deplacement.pl'). % Gestion des déplacement
 
 
+% ________  Les Variables ___________
+:- dynamic estPlaceMur/3.
+
+
 % Atome à rentrer pour lancer le programme. 
 start :- 
     NombreMurs is 5,

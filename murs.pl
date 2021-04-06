@@ -1,6 +1,3 @@
-% ________  Les Variables ___________
-:- dynamic estPlaceMur/3.
-
 :-consult('tools.pl').
 
 aEncoreMur(joueurA, N, _) :-  N > 0.
