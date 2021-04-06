@@ -1,5 +1,5 @@
 % Les outils pratiques
-:-include('tools.pl').
+:-consult('tools.pl').
 
 % ___________________________________________________________
     % Affiche les infos liés au joueurs puis la grille du terrain

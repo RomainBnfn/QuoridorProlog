@@ -6,6 +6,7 @@ autreJoueur(joueurA, joueurB).
 aGagne(joueurA, [[_,9,_], _]).
 aGagne(joueurB, [_, [_,1,_]]).
 
+
 :- discontiguous autreSens/2.
 autreSens(vertical, horizontal).
 autreSens(horizontal, vertical).

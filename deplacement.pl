@@ -1,4 +1,3 @@
-:-include('murs.pl'). % besoins des murs
 
  % ___________________________________________________________
     % Analyse si deux cases sont côte-à-côte
