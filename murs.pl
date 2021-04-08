@@ -1,20 +1,30 @@
-% ________  Les Variables ___________
-:- dynamic estPlaceMur/3.
+:-consult('tools.pl').
 
-:-include('tools.pl'). % Les outils pratiques
+aEncoreMur(joueurA, N, _) :-  N > 0.
+aEncoreMur(joueurB, _, N) :-  N > 0.
+aEncoreMur(Joueur, [[_, _, Na], [_, _, Nb]]) :- aEncoreMur(Joueur, Na, Nb).
 
-aEncoreMur(joueurA, N, _) :- N > 0.
-aEncoreMur(joueurB, _, N) :- N > 0.
-aEncoreMur(J, [[_, _, Na], [_, _, Nb]]) :- aEncoreMur(J, Na, Nb).
+supprmerTousMurs() :-
+    retractall(estPlaceMur(_, _, _)).
 
 sontCorrectesCoordonneesMurs(X, Y, Sens) :-
-    write('Sont'),
     (Sens == vertical; Sens == horizontal),
+    
     X >= 1, X =< 9,
     Y >= 1, Y =< 9, 
-    (X \= 1; Sens \= vertical),
-    (Y \= 1; Sens \= horizontal),
-    not(estPlaceMur(X, Y, Sens)).
+    write('a'),
+    
+    [X, Sens] \= [1, vertical],
+    [Y, Sens] \= [1, horizontal],
+    write('b'),
+    
+    [X, Sens] \= [9, horizontal],
+    [Y, Sens] \= [9, vertical],
+    write('c'),
+    
+    not(estPlaceMur(X, Y, Sens)),
+    write('d')
+    .
 
 % ___________________________________________________________
     % Indique si un joueur peut placer un mur à un endroit
@@ -22,8 +32,7 @@ sontCorrectesCoordonneesMurs(X, Y, Sens) :-
     %   X, Y : Coordonnées du potentiel mur 
     %   Sens : Sens du potentiel mur (horizontal / vertical)
 estPlacableDoubleMur(X, Y, Sens) :-
-    write('Double')/**,
-    
+  
     ( (Sens == vertical) ->
         % Vertical 
         Xbis is X+1, Ybis is Y, % Les coordonnées du second petit mur
@@ -40,16 +49,14 @@ estPlacableDoubleMur(X, Y, Sens) :-
     sontCorrectesCoordonneesMurs(X, Y, Sens),       % Un petit mur peut être placé là
     sontCorrectesCoordonneesMurs(Xbis, Ybis, Sens), % et là aussi.
 
-    write('A'), nl,
     % On regarde si on coupe pas un autre mur. (ie: Il n'y a pas à la fois
     % de mur avant et après le second mur dans l'autre sens).
     autreSens(Sens, AutreSens),
-    (   not(estPlaceMur(Xbefore, Ybefore, AutreSens)); 
-        not(estPlaceMur(Xafter, Yafter, AutreSens)) ),
-    
-    write('Autre'), nl
+    (
+        not(estPlaceMur(Xafter, Yafter, AutreSens));
+        not(estPlaceMur(Xbefore, Ybefore, AutreSens))
+    )    
     % On regarde si on ne bloque pas le chemin du haut vers le bas du terrain
-    */
     . 
     
 
@@ -68,14 +75,20 @@ placerMur(X, Y, Sens, Joueur, [[Xa, Ya, Na], [Xb, Yb, Nb]], NouveauPlateau) :-
     % Placer le mur
     ((Sens == vertical) ->
         % Vertical 
-        Xbis is X+1, Ybis is Y, % Les coordonnées du second petit mur
-        Na is Na-1;
+        Xbis is X, Ybis is Y+1; % Les coordonnées du second petit mur
         % Sinon : Horizontal
-        Xbis is X, Ybis is Y+1,  % Les coordonnées du second petit mur
-        Nb is Nb-1
+        Xbis is X+1, Ybis is Y  % Les coordonnées du second petit mur
     ),
+    ((Joueur == joueurA) -> 
+        NaNew is Na-1, NbNew is Nb;
+        NaNew is Na, NbNew is Nb-1
+    ),
+    
+    retractall(estPlaceMur(X, Y, Sens)),
     assert(estPlaceMur(X, Y, Sens)),
-    assert(estPlaceMur(Xbis, Ybis, Sens))/*,
-    NouveauPlateau = [[Xa, Ya, Na], [Xb, Yb, Nb]]*/.
+
+    retractall(estPlaceMur(Xbis, Ybis, Sens)),
+    assert(estPlaceMur(Xbis, Ybis, Sens)),
+    NouveauPlateau = [[Xa, Ya, NaNew], [Xb, Yb, NbNew]].
         
     

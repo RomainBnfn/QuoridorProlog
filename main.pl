@@ -11,14 +11,19 @@
 %
 
 % ________  Les import ___________
-:-include('affichage.pl'). % Les fonctions d'affichage graphique
-:-include('tools.pl'). % Les outils pratiques
-:-include('murs.pl'). % Gestion des murs
-:-include('deplacement.pl'). % Gestion des déplacement
+:-consult('affichage.pl'). % Les fonctions d'affichage graphique
+:-consult('tools.pl').
+:-consult('murs.pl'). % Gestion des murs
+:-consult('deplacement.pl'). % Gestion des déplacement
+
+
+% ________  Les Variables ___________
+:- dynamic estPlaceMur/3.
 
 
 % Atome à rentrer pour lancer le programme. 
 start :- 
+    supprmerTousMurs(),
     NombreMurs is 5,
     Plateau = [
         [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
@@ -103,7 +108,7 @@ demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau) :-
     write(' Entrez l\'orientation de votre mur : vertical ou horizontal :'), nl,
     read(ReponseSens), nl,
 
-    ( not(placerMur(ReponseX, ReponseY, ReponseSens, Joueur, Plateau, NouveauPlateau)) ->
+    ( placerMur(ReponseX, ReponseY, ReponseSens, Joueur, Plateau, NouveauPlateau) ->
         % OK
         write('Le mur a bien ete place !');
         % Nope

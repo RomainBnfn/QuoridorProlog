@@ -1,5 +1,5 @@
 % Les outils pratiques
-:-include('tools.pl').
+:-consult('tools.pl').
 
 % ___________________________________________________________
     % Affiche les infos liés au joueurs puis la grille du terrain
@@ -23,27 +23,25 @@ dessinerTerrain([ [Xa, Ya, Na], [Xb, Yb, Nb] ]):-
 
 
 % ___________________________________________________________
-    %  Affiche la ligne i (les murs avant puis les pions) puis 
+    %  Affiche la ligne j (les murs avant puis les pions) puis 
     %  demande à suivante de s'afficher.
     %
-    %   I        : Le numéro de la ligne à afficher
+    %   J        : Le numéro de la ligne à afficher
     %   [Xa, Ya] :  Les coordonnées du pion du joueur A
     %   [Xb, Yb] :  Les coordonnées du pion du joueur B
     %   Murs     :  La liste des murs posés.
-dessinerLigne(I, [Xa, Ya], [Xb, Yb]) :- % I le numéro de la ligne dessinée.
-    I =< 9, % On est dans le terrain.
+dessinerLigne(J, [Xa, Ya], [Xb, Yb]) :- % J le numéro de la ligne dessinée.
+    J =< 9, % On est dans le terrain.
     
     %Dessiner les indices (n° des lignes) puis les murs horizontaux
-    write(I), write(' '), dessinerMursHorizontaux(I, 1),
-
+    write(J), write(' '), dessinerMursHorizontaux(1, J),
     % Dessiner les pions et murs verticaux
-    write('  '), dessinerPionsMurs(I, 1, [Xa, Ya], [Xb, Yb] ),  
+    write('  '), dessinerPionsMurs(1, J, [Xa, Ya], [Xb, Yb] ),  
 
-    Inew is I + 1, % I++
-    dessinerLigne(Inew, [Xa, Ya], [Xb, Yb]). % On dessine la ligne suivante
+    Jplus is J + 1, % J++
+    dessinerLigne(Jplus, [Xa, Ya], [Xb, Yb]). % On dessine la ligne suivante
 
-dessinerLigne(I, _, _) :- % Après la dernière ligne
-    I > 9,
+dessinerLigne(10, _, _) :- % Après la dernière ligne
     write('  +   +   +   +   +   +   +   +   +   +'), nl.
 
 % ___________________________________________________________
@@ -55,36 +53,25 @@ dessinerLigne(I, _, _) :- % Après la dernière ligne
     %   [Xa, Ya] :  Les coordonnées du pion du joueur A
     %   [Xb, Yb] :  Les coordonnées du pion du joueur B
     %   Murs     :  La liste des murs posés.
-dessinerPionsMurs(I, J, [I, J], [Xb, Yb] ) :- 
-    J =< 9, % On ne dépasse pas du terrain
+dessinerPionsMurs(I, J, PosA, PosB ) :- 
+    I =< 9,
+    getChar(I, J, PosA, PosB, Char),
     dessinerMur(I, J, vertical),
-    write(' A '),
-    Jnew is J + 1,
-    dessinerPionsMurs(I, Jnew, [I,J], [Xb, Yb] ).
+    write(' '), write(Char), write(' '),
 
-dessinerPionsMurs(I, J, [Xa, Ya], [I, J] ) :- 
-    J =< 9, % On ne dépasse pas du terrain
+    Iplus is I + 1,
+    dessinerPionsMurs(Iplus, J, PosA, PosB).
 
-    dessinerMur(I, J, vertical),
-    write(' B '),
-    
-    Jnew is J + 1,
-    dessinerPionsMurs(I, Jnew, [Xa, Ya], [I, J] ).
+dessinerPionsMurs(10, _, _, _) :- nl.
 
-dessinerPionsMurs(I, J,  [Xa, Ya], [Xb, Yb] ) :-
-    J =< 9, % On ne dépasse pas du terrain
-
-    ( Xa\=I ; Ya\=J ), % On est pas sur une case d'un pion
-    ( Xb\=I ; Yb\=J ),
-
-    dessinerMur(I, J, vertical),
-    write('   '),
-
-    Jnew is J + 1,
-    dessinerPionsMurs(I, Jnew, [Xa, Ya], [Xb, Yb]).
-
-dessinerPionsMurs(_, 10, _, _) :- nl.
-
+getChar(I,J, [Xa, Ya], [Xb, Yb], Char) :-
+    (([I, J]==[Xa, Ya]) ->
+        Char = 'A';
+        (([I,J]==[Xb, Yb]) ->
+            Char = 'B';
+            Char = ' '
+        )
+    ).
 % ___________________________________________________________
     %
     %
@@ -97,16 +84,16 @@ dessinerMur(I,J, vertical):-
 % ___________________________________________________________
 
 dessinerMursHorizontaux(I, J) :-
-    J =< 9,
+    I =< 9,
     write('+'),
     ( estPlaceMur(I, J, horizontal) -> 
         write('---');
         write('   ')
     ),
-    Jnew is J+1,
-    dessinerMursHorizontaux(I, Jnew).
+    Iplus is I+1,
+    dessinerMursHorizontaux(Iplus, J).
 
-dessinerMursHorizontaux(_, 10) :-
+dessinerMursHorizontaux(10, _) :-
     write('+'),
     nl.
 
