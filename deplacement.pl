@@ -14,7 +14,7 @@ casesAdjacentes([X,Y],Case2):-(
 
 
  % ___________________________________________________________
-    % Analyse si deux cases sont séparées par un mur (pas forcément adjacente)
+    % Analyse si deux cases sont séparées par un mur (pas forcément adjacentes)
     %
     % Case1 : coordonnées première case
     % Case2 : coordonnées deuxième case
@@ -30,7 +30,7 @@ sontSepareesParUnMur(Case1,Case2) :- (
     ).
 
  % ___________________________________________________________
-    % Analyse si un déplacement est possible
+    % Analyse si un déplacement entre deux cases est valide selon les règles
     %
     % X,Y : coordonnées de la case vers laquel on veut se déplacer
     % Pion : coordonnées avant déplacement
