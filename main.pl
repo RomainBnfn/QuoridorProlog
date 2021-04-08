@@ -23,6 +23,7 @@
 
 % Atome à rentrer pour lancer le programme. 
 start :- 
+    supprmerTousMurs(),
     NombreMurs is 5,
     Plateau = [
         [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
