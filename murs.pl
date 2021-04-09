@@ -8,6 +8,7 @@ supprmerTousMurs() :-
     retractall(estPlaceMur(_, _, _)).
 
 sontCorrectesCoordonneesMurs(X, Y, Sens) :-
+
     (Sens == vertical; Sens == horizontal),
     !,
     X >= 1, X =< 9,
@@ -15,10 +16,7 @@ sontCorrectesCoordonneesMurs(X, Y, Sens) :-
     
     [X, Sens] \= [1, vertical],
     [Y, Sens] \= [1, horizontal],
-    
-    [X, Sens] \= [9, horizontal],
-    [Y, Sens] \= [9, vertical],
-    
+
     not(estPlaceMur(X, Y, Sens)).
 
 % ___________________________________________________________
@@ -26,7 +24,7 @@ sontCorrectesCoordonneesMurs(X, Y, Sens) :-
     %
     %   X, Y : Coordonnées du potentiel mur 
     %   Sens : Sens du potentiel mur (horizontal / vertical)
-estPlacableDoubleMur(X, Y, Sens) :-
+estPlacableDoubleMur(X, Y, Sens, [Xa, Ya], [Xb, Yb]) :-
   
     ( (Sens == vertical) ->
         % Vertical 
@@ -53,7 +51,8 @@ estPlacableDoubleMur(X, Y, Sens) :-
         not(estPlaceMur(Xbefore, Ybefore, AutreSens))
     ),
     !,
-    % On regarde si on ne bloque pas le chemin du haut vers le bas du terrain
+    % On regarde si on ne bloque pas le chemin du haut vers le bas du terrain 
+    % --> On est obligé de simuler de placer un mur puis de l'enlever
 	assert(estPlaceMur(X,Y,Sens)),
 	assert(estPlaceMur(Xbis, Ybis, Sens)),
 
@@ -82,7 +81,7 @@ placerMur(X, Y, Sens, Joueur, [[Xa, Ya, Na], [Xb, Yb, Nb]], NouveauPlateau) :-
     % Conditions
     aEncoreMur(Joueur, Na, Nb),
     % _________
-    estPlacableDoubleMur(X, Y, Sens),
+    estPlacableDoubleMur(X, Y, Sens, [Xa, Ya], [Xb, Yb]),
 
     % Placer le mur
     ((Sens == vertical) ->
