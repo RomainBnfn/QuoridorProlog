@@ -26,7 +26,7 @@ sontCorrectesCoordonneesMurs(X, Y, Sens) :-
     %
     %   X, Y : Coordonnées du potentiel mur 
     %   Sens : Sens du potentiel mur (horizontal / vertical)
-estPlacableDoubleMur(X, Y, Sens) :-
+estPlacableDoubleMur(X, Y, Sens, [Xa, Ya], [Xb, Yb]) :-
   
     ( (Sens == vertical) ->
         % Vertical 
@@ -82,7 +82,7 @@ placerMur(X, Y, Sens, Joueur, [[Xa, Ya, Na], [Xb, Yb, Nb]], NouveauPlateau) :-
     % Conditions
     aEncoreMur(Joueur, Na, Nb),
     % _________
-    estPlacableDoubleMur(X, Y, Sens),
+    estPlacableDoubleMur(X, Y, Sens, [Xa, Ya], [Xb, Yb]),
 
     % Placer le mur
     ((Sens == vertical) ->
