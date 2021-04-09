@@ -9,22 +9,17 @@ supprmerTousMurs() :-
 
 sontCorrectesCoordonneesMurs(X, Y, Sens) :-
     (Sens == vertical; Sens == horizontal),
-    
+    !,
     X >= 1, X =< 9,
     Y >= 1, Y =< 9, 
-    write('a'),
     
     [X, Sens] \= [1, vertical],
     [Y, Sens] \= [1, horizontal],
-    write('b'),
     
     [X, Sens] \= [9, horizontal],
     [Y, Sens] \= [9, vertical],
-    write('c'),
     
-    not(estPlaceMur(X, Y, Sens)),
-    write('d')
-    .
+    not(estPlaceMur(X, Y, Sens)).
 
 % ___________________________________________________________
     % Indique si un joueur peut placer un mur à un endroit
@@ -35,17 +30,18 @@ estPlacableDoubleMur(X, Y, Sens) :-
   
     ( (Sens == vertical) ->
         % Vertical 
-        Xbis is X+1, Ybis is Y, % Les coordonnées du second petit mur
+        Xbis is X, Ybis is Y+1, % Les coordonnées du second petit mur
 
         Xbefore is X-1  , Ybefore is Y+1,   % Les coordonnés des murs à ne pas couper
         Xafter is X     , Yafter is Y+1;    %
 
         % Sinon : Horizontal
-        Xbis is X, Ybis is Y+1,  % Les coordonnées du second petit mur
+        Xbis is X+1, Ybis is Y,  % Les coordonnées du second petit mur
 
         Xbefore is X+1  , Ybefore is Y-1,   % Les coordonnés des murs à ne pas couper
         Xafter is X+1   , Yafter is Y      %
     ), 
+    !,
     sontCorrectesCoordonneesMurs(X, Y, Sens),       % Un petit mur peut être placé là
     sontCorrectesCoordonneesMurs(Xbis, Ybis, Sens), % et là aussi.
 
@@ -55,7 +51,8 @@ estPlacableDoubleMur(X, Y, Sens) :-
     (
         not(estPlaceMur(Xafter, Yafter, AutreSens));
         not(estPlaceMur(Xbefore, Ybefore, AutreSens))
-    )    
+    ),
+    !
     % On regarde si on ne bloque pas le chemin du haut vers le bas du terrain
     . 
     

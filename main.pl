@@ -26,8 +26,8 @@ start :-
     supprmerTousMurs(),
     NombreMurs is 5,
     Plateau = [
-        [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
-        [5, 9, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
+        [5, 4, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
+        [5, 5, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
 
     
     % On initialise le jeu en plaçant un joueur en (1,5) avec 5 murs,
