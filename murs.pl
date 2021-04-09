@@ -52,9 +52,24 @@ estPlacableDoubleMur(X, Y, Sens) :-
         not(estPlaceMur(Xafter, Yafter, AutreSens));
         not(estPlaceMur(Xbefore, Ybefore, AutreSens))
     ),
-    !
+    !,
     % On regarde si on ne bloque pas le chemin du haut vers le bas du terrain
-    . 
+	assert(estPlaceMur(X,Y,Sens)),
+	assert(estPlaceMur(Xbis, Ybis, Sens)),
+
+	(
+		(path(case(Xa, Ya), case(_, 9), _), path(case(Xb, Yb), case(_, 1), _)) ->
+			
+			retractall(estPlaceMur(X, Y, Sens)),
+			retractall(estPlaceMur(Xbis, Ybis, Sens))
+			
+			;
+
+			retractall(estPlaceMur(X, Y, Sens)),
+			retractall(estPlaceMur(Xbis, Ybis, Sens)),
+			false
+	).
+
     
 
 % ___________________________________________________________

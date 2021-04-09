@@ -15,6 +15,7 @@
 :-consult('tools.pl').
 :-consult('murs.pl'). % Gestion des murs
 :-consult('deplacement.pl'). % Gestion des déplacement
+:-consult('chemin.pl'). % Gestion des chemins
 
 
 % ________  Les Variables ___________
@@ -26,13 +27,10 @@ start :-
     supprmerTousMurs(),
     NombreMurs is 5,
     Plateau = [
-<<<<<<< HEAD
-        [5, 4, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
-        [5, 5, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
-=======
+        
         [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
         [5, 2, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
->>>>>>> 447b771c195971387d3a5e52dd71c3344dbbf1a2
+
 
     
     % On initialise le jeu en plaçant un joueur en (1,5) avec 5 murs,
