@@ -26,8 +26,13 @@ start :-
     supprmerTousMurs(),
     NombreMurs is 5,
     Plateau = [
+<<<<<<< HEAD
         [5, 4, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
         [5, 5, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
+=======
+        [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
+        [5, 2, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
+>>>>>>> 447b771c195971387d3a5e52dd71c3344dbbf1a2
 
     
     % On initialise le jeu en plaçant un joueur en (1,5) avec 5 murs,
@@ -120,11 +125,14 @@ demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau) :-
 demanderDeplacerJoueur(Joueur, Plateau, NouveauPlateau) :- (
     [J1,J2] = Plateau,
     write('Vos coordonnees actuelles: '),
-    (Joueur == joueurA -> write(J1);write(J2)),nl,
+    (Joueur == joueurA -> 
+        [X,Y,_] = J1;
+        [X,Y,_] = J2),
+    write('('),write(X),write(';'),write(Y),write(')'),nl,
     write('Ou voulez vous placer vous deplacer ?'), nl, 
-    write(' Entrez la coordonnee X (ligne) :'), nl,
+    write(' Entrez la coordonnee X (colonne) :'), nl,
     read(ReponseX), nl,
-    write(' Entrez la coordonnee Y (colonne):'), nl,
+    write(' Entrez la coordonnee Y (ligne):'), nl,
     read(ReponseY), nl,
 
     (seDeplacer(ReponseX, ReponseY, Plateau, Joueur, NouveauPlateau) -> 
