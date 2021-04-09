@@ -29,7 +29,7 @@ start :-
     Plateau = [
         
         [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
-        [5, 2, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
+        [5, 9, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
 
 
     
