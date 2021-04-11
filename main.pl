@@ -20,17 +20,27 @@
 
 % ________  Les Variables ___________
 :- dynamic estPlaceMur/3.
-
-
+     
 % Atome à rentrer pour lancer le programme. 
-start :- 
+start :-
     supprmerTousMurs(),
-    NombreMurs is 5,
+    % assert(estPlaceMur(3,5,horizontal)),
+    % assert(estPlaceMur(4,5,horizontal)),
+    % assert(estPlaceMur(4,4,vertical)),
+    % assert(estPlaceMur(4,3,vertical)),
+    % assert(estPlaceMur(5,4,horizontal)),
+    % assert(estPlaceMur(6,4,horizontal)),
+    % assert(estPlaceMur(7,4,horizontal)),
+    % assert(estPlaceMur(8,4,horizontal)),
+    % assert(estPlaceMur(8,4,vertical)),
+    % assert(estPlaceMur(8,5,vertical)),
+    % assert(estPlaceMur(2,6,horizontal)),
+    % assert(estPlaceMur(3,6,horizontal)),
+    NombreMurs is 3,
     Plateau = [
         
         [5, 1, NombreMurs],     % Position initiale du joueur A et nombre de murs qu'il lui reste
         [5, 9, NombreMurs]],    % Position initiale du joueur B et nombre de murs qu'il lui reste
-
 
     
     % On initialise le jeu en plaçant un joueur en (1,5) avec 5 murs,
@@ -104,9 +114,9 @@ tourJoueur(Joueur, Plateau, NouveauPlateau) :-
     %   NouveauPlateau  : Le plateau après avoir effectué l'action
 demanderPlacerMurJoueur(Joueur, Plateau, NouveauPlateau) :-
     write('Ou voulez vous placer votre mur ?'), nl, 
-    write(' Entrez la coordonnee X :'), nl,
+    write(' Entrez la coordonnee X (colonne) :'), nl,
     read(ReponseX), nl,
-    write(' Entrez la coordonnee Y :'), nl,
+    write(' Entrez la coordonnee Y (ligne) :'), nl,
     read(ReponseY), nl,
     write(' Entrez l\'orientation de votre mur : vertical ou horizontal :'), nl,
     read(ReponseSens), nl,
@@ -130,7 +140,7 @@ demanderDeplacerJoueur(Joueur, Plateau, NouveauPlateau) :- (
     write('Ou voulez vous placer vous deplacer ?'), nl, 
     write(' Entrez la coordonnee X (colonne) :'), nl,
     read(ReponseX), nl,
-    write(' Entrez la coordonnee Y (ligne):'), nl,
+    write(' Entrez la coordonnee Y (ligne) :'), nl,
     read(ReponseY), nl,
 
     (seDeplacer(ReponseX, ReponseY, Plateau, Joueur, NouveauPlateau) -> 

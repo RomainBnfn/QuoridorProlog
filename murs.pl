@@ -16,7 +16,10 @@ sontCorrectesCoordonneesMurs(X, Y, Sens) :-
     
     [X, Sens] \= [1, vertical],
     [Y, Sens] \= [1, horizontal],
-
+    
+    [X, Sens] \= [9, horizontal],
+    [Y, Sens] \= [9, vertical],
+    
     not(estPlaceMur(X, Y, Sens)).
 
 % ___________________________________________________________
