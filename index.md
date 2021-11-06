@@ -1,8 +1,10 @@
-## Welcome to GitHub Pages
+## Quoridor Prolog
 
-You can use the [editor on GitHub](https://github.com/RomainBnfn/QuoridorProlog/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Ce jeu de plateau joué sur un plateau de 81 cases, a pour but de mettre en place des stratégies et d'empêcher le joueur adverse d’atteindre le côté du plateau face à lui. Des contraintes sont à prendre en compte tel que la disposition de mur pour chaque joueur afin de restreindre le chemin voulu. (voir images ci dessous)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+[Image](src) 
+[Image](src)
+[Image](src)
 
 ### Markdown
 
@@ -23,7 +25,7 @@ Syntax highlighted code block
 
 **Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
+[Link](url) and !
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
